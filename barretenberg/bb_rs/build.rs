@@ -24,26 +24,27 @@ fn main() {
             .build();
     }
     // Android
-    else if target_os == "android" {
-        let android_home = option_env!("ANDROID_HOME").expect("ANDROID_HOME not set");
-        let ndk_version = option_env!("NDK_VERSION").expect("NDK_VERSION not set");
+    // else if target_os == "android" {
+    //     let android_home = option_env!("ANDROID_HOME").expect("ANDROID_HOME not set");
+    //     let ndk_version = option_env!("NDK_VERSION").expect("NDK_VERSION not set");
 
-        dst = Config::new("../cpp")
-        .generator("Ninja")
-        .configure_arg("-DCMAKE_BUILD_TYPE=RelWithAssert")
-        .configure_arg("-DANDROID_ABI=arm64-v8a")
-        .configure_arg("-DANDROID_PLATFORM=android-33")
-        .configure_arg(&format!("--toolchain={}/ndk/{}/build/cmake/android.toolchain.cmake", android_home, ndk_version))
-        .build_target("bb")
-        .build();
-    } 
+    //     dst = Config::new("../cpp")
+    //     .generator("Ninja")
+    //     .configure_arg("-DCMAKE_BUILD_TYPE=RelWithAssert")
+    //     .configure_arg("-DANDROID_ABI=arm64-v8a")
+    //     .configure_arg("-DANDROID_PLATFORM=android-33")
+    //     .configure_arg(&format!("--toolchain={}/ndk/{}/build/cmake/android.toolchain.cmake", android_home, ndk_version))
+    //     .build_target("bb")
+    //     .build();
+    // }
     // MacOS and other platforms
     else {
         dst = Config::new("../cpp")
-        .generator("Ninja")
-        .configure_arg("-DCMAKE_BUILD_TYPE=RelWithAssert")
-        .build_target("bb")
-        .build();
+            .generator("Ninja")
+            .configure_arg("-DCMAKE_BUILD_TYPE=RelWithAssert")
+            .configure_arg("-DDISABLE_ASM=ON")
+            .build_target("bb")
+            .build();
     }
 
     // Add the library search path for Rust to find during linking.
@@ -98,12 +99,12 @@ fn main() {
             ]);
     } else {
         builder = builder
-        // Add the include path for headers.
-        .clang_args([
-            "-std=c++20",
-            "-xc++",
-            &format!("-I{}/build/include", dst.display())
-        ]);
+            // Add the include path for headers.
+            .clang_args([
+                "-std=c++20",
+                "-xc++",
+                &format!("-I{}/build/include", dst.display()),
+            ]);
     }
 
     let bindings = builder
@@ -111,11 +112,14 @@ fn main() {
         .header_contents(
             "wrapper.hpp",
             r#"
+                #include <barretenberg/crypto/aes128/c_bind.hpp>
                 #include <barretenberg/crypto/pedersen_commitment/c_bind.hpp>
                 #include <barretenberg/crypto/pedersen_hash/c_bind.hpp>
                 #include <barretenberg/crypto/poseidon2/c_bind.hpp>
                 #include <barretenberg/crypto/blake2s/c_bind.hpp>
                 #include <barretenberg/crypto/schnorr/c_bind.hpp>
+                #include <barretenberg/crypto/ecdsa/c_bind.hpp>
+                #include <barretenberg/ecc/curves/grumpkin/c_bind.hpp>
                 #include <barretenberg/srs/c_bind.hpp>
                 #include <barretenberg/examples/simple/c_bind.hpp>
                 #include <barretenberg/common/c_bind.hpp>
@@ -128,8 +132,12 @@ fn main() {
         .allowlist_function("pedersen_hash_buffer")
         .allowlist_function("poseidon_hash")
         .allowlist_function("poseidon_hashes")
+        .allowlist_function("poseidon2_hash")
+        .allowlist_function("poseidon2_hashes")
+        .allowlist_function("poseidon2_permutation")
         .allowlist_function("blake2s")
         .allowlist_function("blake2s_to_field_")
+        .allowlist_function("schnorr_compute_public_key")
         .allowlist_function("schnorr_construct_signature")
         .allowlist_function("schnorr_verify_signature")
         .allowlist_function("schnorr_multisig_create_multisig_public_key")
@@ -137,8 +145,17 @@ fn main() {
         .allowlist_function("schnorr_multisig_construct_signature_round_1")
         .allowlist_function("schnorr_multisig_construct_signature_round_2")
         .allowlist_function("schnorr_multisig_combine_signatures")
+        .allowlist_function("ecdsa__compute_public_key")
+        .allowlist_function("ecdsa__construct_signature")
+        .allowlist_function("ecdsa__recover_public_key_from_signature")
+        .allowlist_function("ecdsa__verify_signature")
         .allowlist_function("aes_encrypt_buffer_cbc")
         .allowlist_function("aes_decrypt_buffer_cbc")
+        .allowlist_function("ecc_grumpkin__mul")
+        .allowlist_function("ecc_grumpkin__add")
+        .allowlist_function("ecc_grumpkin__batch_mul")
+        .allowlist_function("ecc_grumpkin__get_random_scalar_mod_circuit_modulus")
+        .allowlist_function("ecc_grumpkin__reduce512_buffer_mod_circuit_modulus")
         .allowlist_function("srs_init_srs")
         .allowlist_function("srs_init_grumpkin_srs")
         .allowlist_function("examples_simple_create_and_verify_proof")

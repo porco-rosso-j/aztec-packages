@@ -5,6 +5,9 @@ if(DISABLE_ADX)
     target_compile_definitions(ecc PRIVATE -DDISABLE_ADX)
 endif()
 
+
+option(DISABLE_ASM "Disable custom assembly" ON) 
+
 target_precompile_headers(
     ecc
     PUBLIC

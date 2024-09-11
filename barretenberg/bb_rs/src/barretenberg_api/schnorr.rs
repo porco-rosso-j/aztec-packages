@@ -4,9 +4,28 @@ use super::{
     traits::{DeserializeBuffer, SerializeBuffer},
 };
 
+pub unsafe fn schnorr_compute_public_key(private_key: &[u8; 32]) -> [u8; 64] {
+    let mut public_key_buf = [0u8; 64];
+
+    bindgen::schnorr_compute_public_key(private_key.as_ptr(), public_key_buf.as_mut_ptr());
+
+    public_key_buf
+}
+
+// pub unsafe fn schnorr_compute_public_key(private_key: &Fr) -> [u8; 64] {
+//     let mut public_key_buf = [0u8; 64];
+
+//     bindgen::schnorr_compute_public_key(
+//         private_key.to_buffer().as_slice().as_ptr(),
+//         public_key_buf.as_mut_ptr()
+//     );
+
+//     public_key_buf
+// }
+
 pub unsafe fn schnorr_construct_signature(
     message: &[u8],
-    private_key: &Fr,
+    private_key: &Fr, // not &[u8]??
 ) -> ([u8; 32], [u8; 32]) {
     let mut s = [0; 32];
     let mut e = [0; 32];

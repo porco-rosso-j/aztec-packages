@@ -1,9 +1,13 @@
 pub mod acir;
+pub mod aes;
 pub mod blake2s;
 pub mod common;
+pub mod ecdsa;
+pub mod grumpkin;
 pub mod models;
 pub mod pedersen;
 pub mod poseidon;
+pub mod poseidon2;
 pub mod schnorr;
 pub mod srs;
 pub mod traits;

@@ -25,11 +25,11 @@ WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
 COMMENT "Generate documentation with Doxygen")
 endif(DOXYGEN_FOUND)
 
-option(DISABLE_ASM "Disable custom assembly" OFF)
+option(DISABLE_ASM "Disable custom assembly" OFF) 
 option(DISABLE_ADX "Disable ADX assembly variant" OFF)
 option(DISABLE_AZTEC_VM "Don't build Aztec VM (acceptable if iterating on core proving)" OFF)
 option(MULTITHREADING "Enable multi-threading" ON)
-option(OMP_MULTITHREADING "Enable OMP multi-threading" OFF)
+option(OMP_MULTITHREADING "Enable OMP multi-threading" OFF) # OFF is default
 option(FUZZING "Build ONLY fuzzing harnesses" OFF)
 option(DISABLE_TBB "Intel Thread Building Blocks" OFF)
 option(COVERAGE "Enable collecting coverage from tests" OFF)
@@ -88,6 +88,9 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_compile_options(-fbracket-depth=512)
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "10")
+    add_compile_options(-fexperimental-library)
+    endif()
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS "14")
         message(WARNING "Clang <14 is not supported")
     endif()

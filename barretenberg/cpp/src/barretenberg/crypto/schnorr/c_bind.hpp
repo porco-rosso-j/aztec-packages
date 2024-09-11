@@ -7,6 +7,8 @@ extern "C" {
 
 using namespace bb;
 
+WASM_EXPORT void schnorr_compute_public_key(uint8_t const* private_key, uint8_t* public_key_buf);
+
 WASM_EXPORT void schnorr_construct_signature(uint8_t const* message_buf,
                                              uint8_t const* private_key,
                                              uint8_t* s,
@@ -18,7 +20,7 @@ WASM_EXPORT void schnorr_verify_signature(
 WASM_EXPORT void schnorr_multisig_create_multisig_public_key(uint8_t const* private_key, uint8_t* multisig_pubkey_buf);
 
 WASM_EXPORT void schnorr_multisig_validate_and_combine_signer_pubkeys(uint8_t const* signer_pubkey_buf,
-                                                                      uint8_t * combined_key_buf,
+                                                                      uint8_t* combined_key_buf,
                                                                       bool* success);
 
 WASM_EXPORT void schnorr_multisig_construct_signature_round_1(uint8_t* round_one_public_output_buf,
