@@ -3,6 +3,7 @@ use super::{
     traits::{DeserializeBuffer, SerializeBuffer},
 };
 
+// TODO: doesn't work somehow. getting stuck.
 pub unsafe fn aes_encrypt_buffer_cbc(
     input: &[u8], // Input data
     iv: &[u8],    // Initialization Vector
@@ -23,6 +24,7 @@ pub unsafe fn aes_encrypt_buffer_cbc(
     result
 }
 
+// TODO: doesn't work somehow. getting stuck.
 pub unsafe fn aes_decrypt_buffer_cbc(
     input: &[u8], // Encrypted input data
     iv: &[u8],    // Initialization Vector

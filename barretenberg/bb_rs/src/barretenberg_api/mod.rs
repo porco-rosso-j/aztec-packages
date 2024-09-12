@@ -28,7 +28,7 @@ pub enum BufferError {
     #[error("Binding call error")]
     Null,
 }
-
+#[derive(Debug)]
 pub struct Buffer {
     data: Vec<u8>,
 }

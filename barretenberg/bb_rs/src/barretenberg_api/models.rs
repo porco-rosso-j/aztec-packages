@@ -68,29 +68,3 @@ impl DeserializeBuffer for Point {
         }
     }
 }
-
-#[derive(Debug, PartialEq)]
-pub struct PointU32 {
-    pub x: [u8; 32],
-    pub y: [u8; 32],
-}
-
-impl SerializeBuffer for PointU32 {
-    fn to_buffer(&self) -> Vec<u8> {
-        self.x.iter().chain(self.y.iter()).cloned().collect()
-    }
-}
-
-impl DeserializeBuffer for PointU32 {
-    type Slice = [u8; 64];
-    fn from_buffer(buf: Self::Slice) -> Self {
-        let mut x = [0u8; 32];
-        let mut y = [0u8; 32];
-
-        // Copy the first 32 bytes into x, and the next 32 bytes into y
-        x.copy_from_slice(&buf[..32]);
-        y.copy_from_slice(&buf[32..]);
-
-        Self { x, y }
-    }
-}

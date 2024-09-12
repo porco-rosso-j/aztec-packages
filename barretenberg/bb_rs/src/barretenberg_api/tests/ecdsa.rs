@@ -1,5 +1,5 @@
 use crate::barretenberg_api::ecdsa;
-use crate::barretenberg_api::models::{Fr, PointU32};
+use crate::barretenberg_api::models::Fr;
 use crate::barretenberg_api::traits::{DeserializeBuffer, SerializeBuffer};
 
 //  cargo test test_ecdsa_compute_public_key -- --nocapture

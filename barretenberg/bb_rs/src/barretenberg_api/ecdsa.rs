@@ -1,6 +1,6 @@
 use super::{
     bindgen,
-    models::{Fr, Point, PointU32},
+    models::{Fr, Point},
     traits::{DeserializeBuffer, SerializeBuffer},
 };
 
