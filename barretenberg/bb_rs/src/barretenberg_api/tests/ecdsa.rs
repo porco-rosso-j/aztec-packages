@@ -127,7 +127,7 @@ fn test_ecdsa__verify_signature() {
             &pubkey,
             &sig_r,
             &sig_s,
-            &mut sig_v,
+            sig_v,
         )
     };
     println!("{:?}", result); // expect () == true

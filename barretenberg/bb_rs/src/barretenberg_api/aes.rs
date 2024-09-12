@@ -5,20 +5,19 @@ use super::{
 
 // TODO: doesn't work somehow. getting stuck.
 pub unsafe fn aes_encrypt_buffer_cbc(
-    input: &[u8], // Input data
-    iv: &[u8],    // Initialization Vector
-    key: &[u8],   // Encryption Key
-    length: &u32, // Length of the input data
+    input: &[u8],
+    iv: &[u8],
+    key: &[u8],
+    length: &u32,
 ) -> [u8; 32] {
-    // Result buffer (32 bytes)
-    let mut result = [0u8; 32]; // Output buffer, assuming a fixed size of 32 bytes
+    let mut result = [0u8; 32];
 
     bindgen::aes_encrypt_buffer_cbc(
-        input.as_ptr(),           // Input buffer pointer
-        iv.as_ptr(),              // IV buffer pointer
-        key.as_ptr(),             // Key buffer pointer
-        length,                   // Length pointer (32-bit integer)
-        &mut result.as_mut_ptr(), // Result buffer pointer
+        input.as_ptr(),
+        iv.as_ptr(),
+        key.as_ptr(),
+        length,
+        &mut result.as_mut_ptr(),
     );
 
     result
@@ -26,20 +25,19 @@ pub unsafe fn aes_encrypt_buffer_cbc(
 
 // TODO: doesn't work somehow. getting stuck.
 pub unsafe fn aes_decrypt_buffer_cbc(
-    input: &[u8], // Encrypted input data
-    iv: &[u8],    // Initialization Vector
-    key: &[u8],   // Encryption Key
-    length: &u32, // Length of the input data
+    input: &[u8],
+    iv: &[u8],
+    key: &[u8],
+    length: &u32,
 ) -> [u8; 32] {
-    // Result buffer (32 bytes)
-    let mut result = [0u8; 32]; // Output buffer, assuming a fixed size of 32 bytes
+    let mut result = [0u8; 32];
 
     bindgen::aes_decrypt_buffer_cbc(
-        input.as_ptr(),           // Input buffer pointer
-        iv.as_ptr(),              // IV buffer pointer
-        key.as_ptr(),             // Key buffer pointer
-        length,                   // Length pointer (32-bit integer)
-        &mut result.as_mut_ptr(), // Result buffer pointer
+        input.as_ptr(),
+        iv.as_ptr(),
+        key.as_ptr(),
+        length,
+        &mut result.as_mut_ptr(),
     );
 
     result

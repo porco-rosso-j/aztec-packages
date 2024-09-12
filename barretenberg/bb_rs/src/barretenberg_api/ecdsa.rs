@@ -55,17 +55,18 @@ pub unsafe fn ecdsa__recover_public_key_from_signature(
 pub unsafe fn ecdsa__verify_signature(
     message: &[u8],
     msg_len: usize,
-    public_key: &[u8; 64],
-    sig_r: &[u8; 32],
-    sig_s: &[u8; 32],
-    sig_v: &mut u8,
+    public_key: &[u8],
+    sig_r: &[u8],
+    sig_s: &[u8],
+    sig_v: u8,
 ) {
+    let mut _sig_v = sig_v;
     bindgen::ecdsa__verify_signature(
         message.as_ptr(),
         msg_len,
         public_key.as_ptr(),
         sig_r.as_ptr(),
         sig_s.as_ptr(),
-        &mut *sig_v,
+        &mut _sig_v,
     );
 }
